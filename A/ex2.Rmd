@@ -1,0 +1,72 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+visits <- read.csv('webvisit1.csv')
+visits$versionF <- factor(visits$version)
+visits$portalF <- factor(visits$portal)
+```
+
+```{r}
+summary(visits)
+```
+
+
+```{r}
+# Graphically examine the variation in page visits for different factors
+# levels (e.g. histogram, density plot etc.)
+visits0 <- visits[visits$version == 0,]
+hist(visits0$pages)
+visits0 <- visits[visits$version == 1,]
+hist(visits0$pages)
+visits0 <- visits[visits$portal == 0,]
+hist(visits0$pages)
+visits0 <- visits[visits$portal == 1,]
+hist(visits0$pages)
+```
+
+```{r}
+# 3 - Statistically test if variable page visits deviates from normal distribution
+shapiro.test(visits$pages)
+# p-value is very small, variable pages does not follow a normal distribution
+```
+
+```{r}
+leveneTest(visits$pages,interaction(visits$version , visits$portal))
+```
+
+```{r}
+model0 <-lm(pages~1 , data = visits, na.action = na.exclude)
+model1 <-lm(pages~version  , data = visits, na.action = na.exclude)
+model2 <-lm(pages~portal , data = visits, na.action = na.exclude)
+model3 <-lm(pages~version+portal , data = visits, na.action = na.exclude)
+model4 <-lm(pages~version+portal+version*portal , data = visits, na.action = na.exclude)
+```
+
+```{r}
+anova(model0,model1)
+anova(model0,model2)
+anova(model3,model4)
+anova(model4)
+```
+
+
+```{r}
+model0 <- lm(pages ~ 1, data=visits)
+model1 <- lm(pages ~ versionF + portalF, data=visits)
+anova(model0, model1)
+anova(model1)
+```
+```{r}
+model0 <- lm(pages ~ 1, data=visits)
+model1 <- lm(pages ~ versionF + , data=visits)
+anova(model0, model1)
+
+```
+
+```{r}
+# By viewing the results of the anova test, we can see that both adding portal and version information have an significant effect on the model. Secondly, we compare the model containing both the varables (version adn portal) with the model containing also the interaction between the two variables. This also shows that the inclusion of the intercacion of the two variables in the model has a significant effect on the model. Therefore the model which should be used to perorm a linear regression on this data should be model4. However, we can see by analyzing the histogram of the page visits, that the distribution of the data is very skewed to one side. This makes is harder to obtain a well-performing linear model for this data. In fact if we inspect the R-squared value of the anova test, we see only a result of 0.22% showing that this model does not accurately fit the data. 
+```
+

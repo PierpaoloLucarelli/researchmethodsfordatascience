@@ -1,0 +1,119 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+require(twitteR)
+require(RCurl)
+require(plyr)
+require(reshape2)
+require(stringr)
+require(car)
+setwd("/Users/plucarelli/Documents/RMDS");
+```
+```{r}
+require(foreign)
+Lec7d <-read.spss("fe.sav", use.value.labels=TRUE,to.data.frame=TRUE)
+lec7sub <- subset(Lec7d, (Feedback !='V'))
+leveneTest(lec7sub$Post_score, lec7sub$Feedback, center = median)
+```
+
+```{r}
+source("credentials.R")
+setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
+
+tweetsA <- searchTwitter("#trump", n=1000, lang="en", resultType="recent") #1000 recent tweets about Donald Trump, in English (I think that 1500 tweets is max) 
+tweetsB <- searchTwitter("#obama", n=1000, lang="en", resultType="recent") #1000 recent tweets about Hillary Clinton 
+tweetsC <- searchTwitter("#ladygaga", n=1000, lang="en", resultType="recent") #1000 recent tweets about Bernie Sanders
+
+tweetsA.text <- laply(tweetsA, function(t)t$getText())
+tweetsB.text <- laply(tweetsB, function(t)t$getText())
+tweetsC.text <- laply(tweetsC, function(t)t$getText())
+```
+
+```{r}
+pos <- scan('positive-words.txt', what = 'character', comment.char=';') 
+neg <- scan('negative-words.txt', what = 'character', comment.char=';')
+```
+
+```{r}
+source("sentiment3.R") 
+
+analysisA <- score.sentiment(tweetsA.text, pos, neg)
+analysisB <- score.sentiment(tweetsB.text, pos, neg)
+analysisC <- score.sentiment(tweetsC.text, pos, neg)
+```
+
+```{r}
+sem<-data.frame(analysisA$score, analysisB$score, analysisC$score)
+semFrame <- melt(sem, measured=c(analysisA.score,analysisB.score, analysisC.score ))
+names(semFrame) <- c("Candidate", "score") 
+semFrame$candidateF <- factor(semFrame$Candidate)
+```
+```{r}
+# Make a conceptual model for the following research question: Is there a
+# difference in the sentiment of the tweets related to the different
+# celebrities?
+
+# conceptual model
+# independant vairables: Tweets
+# dependant vriables: Score (sentiment)
+# mediator variables: List of negative words, List of positive words.
+```
+
+```{r}
+# Analyze the homogeneity of variance of sentiments of the tweets of the
+# different celebrities
+leveneTest(semFrame$score, semFrame$Candidate, center=mean)
+```
+
+
+```{r}
+model01 <- lm(score~1, data = semFrame)
+model02 <- lm(score~candidateF, data = semFrame)
+anova(model01, model02)
+anova(model02)
+```
+```{r}
+hist(semFrame$score)
+```
+```{r}
+pairwise.t.test(semFrame$score, semFrame$candidateF, paired = FALSE, p.adjust.method = "bonferroni")
+```
+
+
+```{r}
+# report part
+
+# We are given the task to investigate wether there are differences in the sentiment of tweets relating to various celebrities.
+# Firslt, because many statistical tests assume that the variances are equal we have investigated if this was actually the case: The test used to asses the homogenity of variances od the data is the Leven Test
+
+leveneTest(semFrame$score, semFrame$Candidate, center=mean)
+```
+
+```{r}
+# We can see that the p-value of the test is smaller than 0.05, therefore we can assume that the 3 sentiment distirbutions do not have equal variances. 
+# We can visially inspect the variances of the 3 distirbutions to get some insight on why this might be the case: 
+hist(analysisA$score)
+hist(analysisB$score)
+hist(analysisC$score)
+
+plot(semFrame$score ~ semFrame$Candidate)
+```
+
+```{r}
+# The variances of the celebrity's tweets sentiment scores are: CelebA: 1.79, CelebB: 1.36, CelebC: 1.03
+# The means of the celebrity's tweets sentiment scores are: CelebA: 0.61, CelebB: -0.309, CelebC: 0.43
+
+# We can see that CelebA has a larger variance in tweets sentiment score, therefore it means that the celebrity has more mixed  
+# opinions with respect to CelebB and CelebC. CelebB and CelebC have a variance closer to zero, meaning that the overall sentiment # for these celebrities are more of the neutral type.
+
+# In all 3 cases, the means of the tweets sentiment scores are around 0. This means that overall the general sentiment for these  # celebrities are neutral. Howver, the mean sentiment of CelebB is below zero, while the other 2 celebrities have a mean sentiment score above zero, This means that on average CelebB gets more negative tweets in comparison to CelebA and CelebC
+```
+
+```{r}
+
+```
+
+
+

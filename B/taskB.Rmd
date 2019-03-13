@@ -1,0 +1,33 @@
+
+```{r}
+data = read.csv("data.csv")
+```
+
+
+```{r}
+# baselines dont use transfer learning
+baselines <- data[data$model == 'B1' | data$model == 'B2' | data$model == 'B3',]
+
+# these models do use transfer learning
+transferLearners <- data[data$model != 'B1' & data$model != 'B2' & data$model != 'B3',]
+
+```
+
+
+
+```{r}
+library(ggpubr)
+# plot the means
+Bmean <- mean(baselines$score)
+TLmean <- mean(transferLearners$score)
+
+hist(baselines$score)
+hist(transferLearners$score)
+
+# H0: Is the mean of the transfer learners more than the mean of the baseline scores?
+# we test this hypothesis using a t-test
+significance <- t.test(transferLearners$score, baselines$score, alternative="greater")
+significance
+```
+# the t-test returns a p-value of 1 which means that we do not need to reject H0. This gives an indication that the means on the methods that do make use of transfer learning are on average better than the ones that do not. 
+
