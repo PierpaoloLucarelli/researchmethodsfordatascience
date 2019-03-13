@@ -30,4 +30,12 @@ significance <- t.test(transferLearners$score, baselines$score, alternative="gre
 significance
 ```
 # the t-test returns a p-value of 1 which means that we do not need to reject H0. This gives an indication that the means on the methods that do make use of transfer learning are on average better than the ones that do not. 
+```{r}
+require(dplyr)
+# create a gruop for each model
+tl <- select(transferLearners, model, score)
+
+# perform analysis of variance on the different models
+anovaResults <- aov(score ~ model, data=tl)
+```
 
