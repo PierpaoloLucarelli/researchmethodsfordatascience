@@ -4,3 +4,6 @@
 .RData
 .Rhistory
 your_twitter.R
+*.pdf
+*.~m
+*.m~

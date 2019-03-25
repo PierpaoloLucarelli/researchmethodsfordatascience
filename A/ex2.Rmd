@@ -1,12 +1,21 @@
 ---
 title: "R Notebook"
 output: html_notebook
+
 ---
+
+```{r}
+knitr::include_graphics("./conc.png")
+```
+
 
 ```{r}
 visits <- read.csv('webvisit1.csv')
 visits$versionF <- factor(visits$version)
 visits$portalF <- factor(visits$portal)
+
+test_data = visits[1:20, ]
+train_data = visits[21:nrow(visits), ]
 ```
 
 ```{r}
@@ -18,13 +27,22 @@ summary(visits)
 # Graphically examine the variation in page visits for different factors
 # levels (e.g. histogram, density plot etc.)
 visits0 <- visits[visits$version == 0,]
-hist(visits0$pages)
+hist(visits0$pages, xlab="Pages", main="Version 0" )
 visits0 <- visits[visits$version == 1,]
-hist(visits0$pages)
+hist(visits0$pages, xlab="Pages", main="Version 1")
 visits0 <- visits[visits$portal == 0,]
-hist(visits0$pages)
+hist(visits0$pages, xlab="Pages", main="No portal")
 visits0 <- visits[visits$portal == 1,]
-hist(visits0$pages)
+hist(visits0$pages, xlab="Pages", main="Using portal")
+```
+
+
+```{r}
+visits0 <- visits[visits$version == 0,]$pages
+visits1 <- visits[visits$version == 1,]$pages
+visits2 <- visits[visits$portal == 0,]$pages
+visits3 <- visits[visits$portal == 1,]$pages
+boxplot(visits0, visits1, visits2, visits3,  names = c("version 0", "version 1", "portal 0", "portal 1"))
 ```
 
 ```{r}
@@ -33,16 +51,13 @@ shapiro.test(visits$pages)
 # p-value is very small, variable pages does not follow a normal distribution
 ```
 
-```{r}
-leveneTest(visits$pages,interaction(visits$version , visits$portal))
-```
 
 ```{r}
-model0 <-lm(pages~1 , data = visits, na.action = na.exclude)
-model1 <-lm(pages~version  , data = visits, na.action = na.exclude)
-model2 <-lm(pages~portal , data = visits, na.action = na.exclude)
-model3 <-lm(pages~version+portal , data = visits, na.action = na.exclude)
-model4 <-lm(pages~version+portal+version*portal , data = visits, na.action = na.exclude)
+model0 <-glm(pages~1 , data = train_data, na.action = na.exclude, family=poisson)
+model1 <-glm(pages~version  , data = train_data, na.action = na.exclude, family=poisson)
+model2 <-glm(pages~portal , data = train_data, na.action = na.exclude, family=poisson)
+model3 <-glm(pages~version+portal , data = train_data, na.action = na.exclude, family=poisson)
+model4 <-glm(pages~version+portal+version*portal , data = train_data, na.action = na.exclude, family=poisson)
 ```
 
 ```{r}
@@ -51,18 +66,32 @@ anova(model0,model2)
 anova(model3,model4)
 anova(model4)
 ```
-
+```{r}
+anova(model0,model1,model2,model3, model4, test = "Chisq")
+```
 
 ```{r}
-model0 <- lm(pages ~ 1, data=visits)
-model1 <- lm(pages ~ versionF + portalF, data=visits)
-anova(model0, model1)
-anova(model1)
+visits$simple <- interaction(visits$version, visits$portal)
+levels(visits$simple)
+portalConsumer <- c(1, -1, 0, 0)
+portalCompany <- c(0, 0, 1, -1)
+simpleEff <- cbind(portalConsumer, portalCompany)
+contrasts(visits$simple) <- simpleEff
+simpleEffectModel <- glm(pages~simple, data = visits, na.action = na.exclude, family=poisson)
+summary.glm(simpleEffectModel)
 ```
 ```{r}
-model0 <- lm(pages ~ 1, data=visits)
-model1 <- lm(pages ~ versionF + , data=visits)
-anova(model0, model1)
+visits$simple <- interaction(visits$version, visits$portal)
+levels(visits$simple)
+version0 <- c(1, 0, -1, 0)
+version1 <- c(0, 1, 0, -1)
+simpleEff <- cbind(version0, version1)
+contrasts(visits$simple) <- simpleEff
+simpleEffectModel <- glm(pages~simple, data = visits, na.action = na.exclude, family=poisson)
+summary.glm(simpleEffectModel)
+```
+
+
 
 ```
 

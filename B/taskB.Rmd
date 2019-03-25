@@ -37,5 +37,6 @@ tl <- select(transferLearners, model, score)
 
 # perform analysis of variance on the different models
 anovaResults <- aov(score ~ model, data=tl)
+summary(anovaResults)
 ```
 
