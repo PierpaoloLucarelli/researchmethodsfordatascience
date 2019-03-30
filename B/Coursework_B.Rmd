@@ -3,10 +3,10 @@ title: "Coursework Assignment B"
 author: "Navin Raj Prabhu - 4764722 , Javed Hassan - 4922573 , Pierpaolo Lucarelli - 4900626"
 date: "4th March, 2019"
 output:
-  word_document: default
   pdf_document:
     fig_caption: yes
     number_sections: yes
+  word_document: default
 subtitle: CS4125 Seminar Research Methodology for Data Science
 ---
 
@@ -26,10 +26,21 @@ data = read.csv("data.csv")
 baselines <- data[data$model == 'B1' | data$model == 'B2' | data$model == 'B3',]
 
 # these models do use transfer learning - multiple training dataset
-transferLearners <- data[data$model != 'B1' & data$model != 'B2' & data$model != 'B3' & data$model != 'S',]
+transferLearners <- data[data$model != 'B1' & data$model != 'B2' & data$model != 'B3',]
 
 # these models do use transfer learning - single training dataset
 singleDataTransferLearner <- data[data$model == 'S',]
+
+
+singleDataTransferLearner$train<- ifelse(singleDataTransferLearner$TrD1==1, 'TrD1',       
+                                  ifelse(singleDataTransferLearner$TrD2==1, 'TrD2', 
+                                  ifelse(singleDataTransferLearner$TrD3==1, 'TrD3', 
+                                  ifelse(singleDataTransferLearner$TrD4==1, 'TrD4',
+                                  ifelse(singleDataTransferLearner$TrD5==1, 'TrD5', 
+                                  ifelse(singleDataTransferLearner$TrD6==1, 'TrD6',
+                                  ifelse(singleDataTransferLearner$TrD7==1, 'TrD7',
+                                  ifelse(singleDataTransferLearner$TrD8==1, 'TrD8', 1))))))))
+
 
 ```
 
@@ -39,33 +50,45 @@ singleDataTransferLearner <- data[data$model == 'S',]
 
 #RQ1:
 
-# plot the means
-Bmean <- mean(baselines$score)
-TLmean <- mean(transferLearners$score)
 
-hist(baselines$score)
-hist(transferLearners$score)
+baselines$learning_mode = 'Non-Transfer-Learners'
+transferLearners$learning_mode = 'Transfer-Learners'
+data_base_transfer = rbind(transferLearners, baselines)
+
+ggplot(data_base_transfer, aes(x=score, color=learning_mode)) + 
+  geom_density()
 
 # H0: Is the mean of the transfer learners more than the mean of the baseline scores?
 # we test this hypothesis using a t-test
 significance <- t.test(transferLearners$score, baselines$score, alternative="greater")
 significance
+
+transferLearners <- transferLearners[transferLearners$model != 'S']
 ```
-conclusion - The t-test returns a p-value of 1 which means that we do not need to reject H0. This gives an indication that the means on the methods that do make use of transfer learning are on average better than the ones that do not. 
+conclusion - The t-test returns a p-value of 1 which means that we do need to reject H0. This gives an indication that the means on the methods that do make use of transfer learning are on average better than the ones that do not. 
 
 
 #2. RQ2: What is the effect of different strategies to simultaneously learn one model from multiple TrD's?
 ```{r}
 #RQ2:
-ggboxplot(transferLearners,x = "model", y = "score", color = "model")
-leveneTest(score ~ model, data = transferLearners)
+#Boxplot mean distribution - wrt Test Data
+ggboxplot(transferLearners,x = "TeD", y = "score", color = "TeD")
+transferLearners_Bad_TeD  = transferLearners[transferLearners$TeD == 'TeD5' | transferLearners$TeD == 'TeD7',]
+transferLearners_Good_TeD = transferLearners[transferLearners$TeD != 'TeD5' | transferLearners$TeD != 'TeD7',]
+
+ggboxplot(transferLearners_Bad_TeD,x = "model", y = "score", color = "model")
+ggboxplot(transferLearners_Good_TeD,x = "model", y = "score", color = "model")
+
+#leveneTest(score ~ model, data = transferLearners)
+
 # Compute the analysis of variance
 res_aov <- lm(score ~ model + TeD, data = transferLearners)
 # Summary of the analysis
 summary(res_aov)
 
 # Pairwise t-tests for - Effect of different Strategies
-pairwise.t.test( transferLearners$score , transferLearners$model)
+pairwise.t.test( transferLearners_Bad_TeD$score , transferLearners_Bad_TeD$model,p.adjust.method = "BH", pool.sd = FALSE)
+pairwise.t.test( transferLearners_Good_TeD$score , transferLearners_Good_TeD$model, p.adjust.method = "BH", pool.sd = FALSE)
 
 ```
 Conclusion:
@@ -81,26 +104,22 @@ Conclusion:
 ```{r}
 #RQ3:
 
-singleDataTransferLearner$train<- ifelse(singleDataTransferLearner$TrD1==1, 'TrD1',       
-                                  ifelse(singleDataTransferLearner$TrD2==1, 'TrD2', 
-                                  ifelse(singleDataTransferLearner$TrD3==1, 'TrD3', 
-                                  ifelse(singleDataTransferLearner$TrD4==1, 'TrD4',
-                                  ifelse(singleDataTransferLearner$TrD5==1, 'TrD5', 
-                                  ifelse(singleDataTransferLearner$TrD6==1, 'TrD6',
-                                  ifelse(singleDataTransferLearner$TrD7==1, 'TrD7',
-                                  ifelse(singleDataTransferLearner$TrD8==1, 'TrD8', 1))))))))
-
-
 #Boxplot mean distribution
 ggboxplot(singleDataTransferLearner,x = "train", y = "score", color = "train")
 
+singleLearners_Bad_TeD  = singleDataTransferLearner[singleDataTransferLearner$TeD == 'TeD5' | singleDataTransferLearner$TeD == 'TeD7',]
+singleLearners_Good_TeD = singleDataTransferLearner[singleDataTransferLearner$TeD != 'TeD5' | singleDataTransferLearner$TeD != 'TeD7',]
+
+ggboxplot(singleLearners_Bad_TeD,x = "train", y = "score", color = "train")
+ggboxplot(singleLearners_Good_TeD,x = "train", y = "score", color = "train")
+
 # Compute the analysis of variance
 res_aov <- lm(score ~ train + TeD, data = singleDataTransferLearner)
-
 # Summary of the analysis
 summary(res_aov)
 
-pairwise.t.test(singleDataTransferLearner$score , singleDataTransferLearner$train)
+pairwise.t.test(singleLearners_Bad_TeD$score , singleLearners_Bad_TeD$train, p.adjust.method = "BH", pool.sd = FALSE)
+pairwise.t.test(singleLearners_Good_TeD$score , singleLearners_Good_TeD$train, p.adjust.method = "BH", pool.sd = FALSE)
 
 ```
 Conclusion:

@@ -1,4 +1,4 @@
-data_set_choice = 1;
+data_set_choice = 2;
 
 if data_set_choice == 0
     load fisheriris;
@@ -8,11 +8,17 @@ elseif data_set_choice == 1
     fashion_mnist = readtable('fashion_mnist_2.csv');
     data = table2array(fashion_mnist(1:10000,2:end));
     label = table2array(fashion_mnist(1:10000,1)); 
+elseif data_set_choice == 2
+    importfile('cifar-10.mat');
+    data  = double(data); 
+    label = double(labels);
 else
     heart_data = readtable('heart.csv');
     data = table2array(heart_data(:,1:end-1));
     label = table2array(heart_data(:,end));
 end    
+
+%data  = data(10,:);
 
 time1   = clock;
 [pca_data1, eigVecs] = mypca(data, 2);

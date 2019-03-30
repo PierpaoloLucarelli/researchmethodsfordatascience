@@ -3,11 +3,13 @@ function [data, eigenV] = mypca(dataset, n)
         disp('PCA dimentionality cannot be larger than dimentions of dataset');
         data = 0;
     else
-        % substract means from each dimension
-        means = zeros(size(dataset, 2), 1);
-        for i=1:size(dataset, 2)
-            means(i) = mean(dataset(:, i));
-            dataset(:, i) = dataset(:, i)-means(i);
+        if size(dataset, 1) > 1
+            % substract means from each dimension
+            means = zeros(size(dataset, 2), 1);
+            for i=1:size(dataset, 2)
+                means(i) = mean(dataset(:, i));
+                dataset(:, i) = dataset(:, i)-means(i);
+            end
         end
         
         % calculate the covariance matrix 
