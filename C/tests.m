@@ -83,4 +83,3 @@ gscatter(pca_data4(:,1), pca_data4(:,2), label);
 
 figure
 gscatter(sne_op(:,1), sne_op(:,2), label);
->>>>>>> 62b0931d0615f095ab9e3503591ad2f3681340a2
