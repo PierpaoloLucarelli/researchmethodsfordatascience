@@ -1,0 +1,132 @@
+---
+title: "Coursework Assignment B"
+author: "Navin Raj Prabhu - 4764722 , Javed Hassan - 4922573 , Pierpaolo Lucarelli - 4900626"
+date: "4th March, 2019"
+output:
+  pdf_document:
+    fig_caption: yes
+    number_sections: yes
+  word_document: default
+subtitle: CS4125 Seminar Research Methodology for Data Science
+---
+
+```{r}
+#library load
+library(ggplot2)
+library(ggpubr)
+library(car) #Package includes Levene's test 
+
+```
+
+```{r}
+#Data Proc:::
+data = read.csv("data.csv")
+
+# baselines dont use transfer learning
+baselines <- data[data$model == 'B1' | data$model == 'B2' | data$model == 'B3',]
+
+# these models do use transfer learning - multiple training dataset
+transferLearners <- data[data$model != 'B1' & data$model != 'B2' & data$model != 'B3',]
+
+# these models do use transfer learning - single training dataset
+singleDataTransferLearner <- data[data$model == 'S',]
+
+
+singleDataTransferLearner$train<- ifelse(singleDataTransferLearner$TrD1==1, 'TrD1',       
+                                  ifelse(singleDataTransferLearner$TrD2==1, 'TrD2', 
+                                  ifelse(singleDataTransferLearner$TrD3==1, 'TrD3', 
+                                  ifelse(singleDataTransferLearner$TrD4==1, 'TrD4',
+                                  ifelse(singleDataTransferLearner$TrD5==1, 'TrD5', 
+                                  ifelse(singleDataTransferLearner$TrD6==1, 'TrD6',
+                                  ifelse(singleDataTransferLearner$TrD7==1, 'TrD7',
+                                  ifelse(singleDataTransferLearner$TrD8==1, 'TrD8', 1))))))))
+
+
+```
+
+#1. RQ1: How much does transfer learning improve over typical non-transfer learning?
+
+```{r}
+
+#RQ1:
+
+
+baselines$learning_mode = 'Non-Transfer-Learners'
+transferLearners$learning_mode = 'Transfer-Learners'
+data_base_transfer = rbind(transferLearners, baselines)
+
+ggplot(data_base_transfer, aes(x=score, color=learning_mode)) + 
+  geom_density()
+
+# H0: Is the mean of the transfer learners more than the mean of the baseline scores?
+# we test this hypothesis using a t-test
+significance <- t.test(transferLearners$score, baselines$score, alternative="greater")
+significance
+
+transferLearners <- transferLearners[transferLearners$model != 'S',]
+```
+conclusion - The t-test returns a p-value of 1 which means that we do need to reject H0. This gives an indication that the means on the methods that do make use of transfer learning are on average better than the ones that do not. 
+
+
+#2. RQ2: What is the effect of different strategies to simultaneously learn one model from multiple TrD's?
+```{r}
+#RQ2:
+#Boxplot mean distribution - wrt Test Data
+ggboxplot(transferLearners,x = "TeD", y = "score", color = "TeD")
+transferLearners_Bad_TeD  = transferLearners[transferLearners$TeD == 'TeD5' | transferLearners$TeD == 'TeD7',]
+transferLearners_Good_TeD = transferLearners[transferLearners$TeD != 'TeD5' | transferLearners$TeD != 'TeD7',]
+
+ggboxplot(transferLearners_Bad_TeD,x = "model", y = "score", color = "model")
+ggboxplot(transferLearners_Good_TeD,x = "model", y = "score", color = "model")
+
+#leveneTest(score ~ model, data = transferLearners)
+
+# Compute the analysis of variance
+res_aov <- lm(score ~ TeD, data = transferLearners)
+# Summary of the analysis
+summary(res_aov)
+
+# Pairwise t-tests for - Effect of different Strategies
+pairwise.t.test( transferLearners_Bad_TeD$score , transferLearners_Bad_TeD$model,p.adjust.method = "none", pool.sd = FALSE)
+pairwise.t.test( transferLearners_Good_TeD$score , transferLearners_Good_TeD$model, p.adjust.method = "none", pool.sd = FALSE)
+
+```
+Conclusion:
+
+1. By plotting boxplot, we see that there is no apparent difference between the model's accuracy.
+2. From the output of the Levene's Test results above, we can see that the p-value is greater than the significance level of 0.05. This means that there is evidence to suggest that the variance across groups is statistically significantly different. Therefore, we can assume the homogeneity of variances in the different treatment groups. So, we can use the ANOVA test.
+3.In one-way ANOVA test, a significant p-value indicates that some of the group means are different, but we don’t know which pairs of groups are different. It’s possible to perform multiple pairwise-comparison, to determine if the mean difference between specific pairs of group are statistically significant.
+4. From the results of the Pairwise and the Tuckey test, we can see that there no difference between the models. That is, given the data and eveidences of performance, we can say that there is no effect of the model strategies on the performance.
+5. But, at the same time the model startegy MF is different from the other models, hence the strategy MF has an effect on the performance. But, from the boxplot, we can see that the mean distribution of MF model accuracies is less, hence we can stringly recommend against using strategy MF.
+
+
+#3. RQ3: What is the effect of the TrD's on the final model performance?
+```{r}
+#RQ3:
+singleLearners_Bad_TeD  = singleDataTransferLearner[singleDataTransferLearner$TeD == 'TeD5' | singleDataTransferLearner$TeD == 'TeD7',]
+singleLearners_Good_TeD = singleDataTransferLearner[singleDataTransferLearner$TeD != 'TeD5' | singleDataTransferLearner$TeD != 'TeD7',]
+
+#Boxplot mean distribution
+ggboxplot(singleLearners_Bad_TeD,x = "train", y = "score", color = "train")
+ggboxplot(singleLearners_Good_TeD,x = "train", y = "score", color = "train")
+
+# Compute the analysis of variance
+res_aov <- lm(score ~ train + TeD, data = singleDataTransferLearner)
+# Summary of the analysis
+summary(res_aov)
+
+pairwise.t.test(singleLearners_Bad_TeD$score , singleLearners_Bad_TeD$train, p.adjust.method = "none", pool.sd = FALSE)
+pairwise.t.test(singleLearners_Good_TeD$score , singleLearners_Good_TeD$train, p.adjust.method = "none", pool.sd = FALSE)
+
+```
+Conclusion:
+The same analysis strategy of the RQ2 was used here, but before applying the annova model, the data was flattened to make data of format, TrainData and equivalent scores. The post flattened dataset, consisted of scores and its quivalent training data label. As a single model can use multiply training data, copies of scores with respective to all the training data used were generated. For Example, if Model M3 used TrD1  and TrD2 to give accuracy 0.5, the flattened data will consist of two rows with (TrD1, 0.5) and (TrD2, 0.5) as row values.
+
+1. From boxplot we can notice an apparent difference in mean distribution.
+2. This visuzlisation is backed up by the use of paired t-test. The t-test reveals that there no difference in the distribution between each of the groups. That means that the Training datasets have no effect on the performance of the final model.
+3. One draw back of the system is that, the effect of combinations of TrDs cannot be explaine by the statistical analysis
+
+
+
+
+

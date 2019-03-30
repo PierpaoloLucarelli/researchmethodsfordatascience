@@ -1,0 +1,463 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Coursework Assignment B},
+            pdfauthor={Navin Raj Prabhu - 4764722 , Javed Hassan - 4922573 , Pierpaolo Lucarelli - 4900626},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Coursework Assignment B}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \subtitle{CS4125 Seminar Research Methodology for Data Science}
+  \author{Navin Raj Prabhu - 4764722 , Javed Hassan - 4922573 , Pierpaolo
+Lucarelli - 4900626}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{4th March, 2019}
+
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#library load}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(ggpubr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: magrittr
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(car) }\CommentTok{#Package includes Levene's test }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: carData
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Data Proc:::}
+\NormalTok{data =}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"data.csv"}\NormalTok{)}
+
+\CommentTok{# baselines dont use transfer learning}
+\NormalTok{baselines <-}\StringTok{ }\NormalTok{data[data}\OperatorTok{$}\NormalTok{model }\OperatorTok{==}\StringTok{ 'B1'} \OperatorTok{|}\StringTok{ }\NormalTok{data}\OperatorTok{$}\NormalTok{model }\OperatorTok{==}\StringTok{ 'B2'} \OperatorTok{|}\StringTok{ }\NormalTok{data}\OperatorTok{$}\NormalTok{model }\OperatorTok{==}\StringTok{ 'B3'}\NormalTok{,]}
+
+\CommentTok{# these models do use transfer learning - multiple training dataset}
+\NormalTok{transferLearners <-}\StringTok{ }\NormalTok{data[data}\OperatorTok{$}\NormalTok{model }\OperatorTok{!=}\StringTok{ 'B1'} \OperatorTok{&}\StringTok{ }\NormalTok{data}\OperatorTok{$}\NormalTok{model }\OperatorTok{!=}\StringTok{ 'B2'} \OperatorTok{&}\StringTok{ }\NormalTok{data}\OperatorTok{$}\NormalTok{model }\OperatorTok{!=}\StringTok{ 'B3'} \OperatorTok{&}\StringTok{ }\NormalTok{data}\OperatorTok{$}\NormalTok{model }\OperatorTok{!=}\StringTok{ 'S'}\NormalTok{,]}
+
+\CommentTok{# these models do use transfer learning - single training dataset}
+\NormalTok{singleDataTransferLearner <-}\StringTok{ }\NormalTok{data[data}\OperatorTok{$}\NormalTok{model }\OperatorTok{==}\StringTok{ 'S'}\NormalTok{,]}
+
+
+\NormalTok{singleDataTransferLearner}\OperatorTok{$}\NormalTok{train<-}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(singleDataTransferLearner}\OperatorTok{$}\NormalTok{TrD1}\OperatorTok{==}\DecValTok{1}\NormalTok{, }\StringTok{'TrD1'}\NormalTok{,       }
+                                  \KeywordTok{ifelse}\NormalTok{(singleDataTransferLearner}\OperatorTok{$}\NormalTok{TrD2}\OperatorTok{==}\DecValTok{1}\NormalTok{, }\StringTok{'TrD2'}\NormalTok{, }
+                                  \KeywordTok{ifelse}\NormalTok{(singleDataTransferLearner}\OperatorTok{$}\NormalTok{TrD3}\OperatorTok{==}\DecValTok{1}\NormalTok{, }\StringTok{'TrD3'}\NormalTok{, }
+                                  \KeywordTok{ifelse}\NormalTok{(singleDataTransferLearner}\OperatorTok{$}\NormalTok{TrD4}\OperatorTok{==}\DecValTok{1}\NormalTok{, }\StringTok{'TrD4'}\NormalTok{,}
+                                  \KeywordTok{ifelse}\NormalTok{(singleDataTransferLearner}\OperatorTok{$}\NormalTok{TrD5}\OperatorTok{==}\DecValTok{1}\NormalTok{, }\StringTok{'TrD5'}\NormalTok{, }
+                                  \KeywordTok{ifelse}\NormalTok{(singleDataTransferLearner}\OperatorTok{$}\NormalTok{TrD6}\OperatorTok{==}\DecValTok{1}\NormalTok{, }\StringTok{'TrD6'}\NormalTok{,}
+                                  \KeywordTok{ifelse}\NormalTok{(singleDataTransferLearner}\OperatorTok{$}\NormalTok{TrD7}\OperatorTok{==}\DecValTok{1}\NormalTok{, }\StringTok{'TrD7'}\NormalTok{,}
+                                  \KeywordTok{ifelse}\NormalTok{(singleDataTransferLearner}\OperatorTok{$}\NormalTok{TrD8}\OperatorTok{==}\DecValTok{1}\NormalTok{, }\StringTok{'TrD8'}\NormalTok{, }\DecValTok{1}\NormalTok{))))))))}
+\end{Highlighting}
+\end{Shaded}
+
+\section{1. RQ1: How much does transfer learning improve over typical
+non-transfer
+learning?}\label{rq1-how-much-does-transfer-learning-improve-over-typical-non-transfer-learning}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#RQ1:}
+
+\CommentTok{# plot the means}
+\NormalTok{Bmean <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(baselines}\OperatorTok{$}\NormalTok{score)}
+\NormalTok{TLmean <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(transferLearners}\OperatorTok{$}\NormalTok{score)}
+
+\KeywordTok{hist}\NormalTok{(baselines}\OperatorTok{$}\NormalTok{score)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Coursework_B_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{hist}\NormalTok{(transferLearners}\OperatorTok{$}\NormalTok{score)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Coursework_B_files/figure-latex/unnamed-chunk-3-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# H0: Is the mean of the transfer learners more than the mean of the baseline scores?}
+\CommentTok{# we test this hypothesis using a t-test}
+\NormalTok{significance <-}\StringTok{ }\KeywordTok{t.test}\NormalTok{(transferLearners}\OperatorTok{$}\NormalTok{score, baselines}\OperatorTok{$}\NormalTok{score, }\DataTypeTok{alternative=}\StringTok{"greater"}\NormalTok{)}
+\NormalTok{significance}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  transferLearners$score and baselines$score
+## t = 2.4239, df = 20.349, p-value = 0.01239
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  0.03666383        Inf
+## sample estimates:
+## mean of x mean of y 
+## 0.5048862 0.3780441
+\end{verbatim}
+
+conclusion - The t-test returns a p-value of 1 which means that we do
+not need to reject H0. This gives an indication that the means on the
+methods that do make use of transfer learning are on average better than
+the ones that do not.
+
+\section{2. RQ2: What is the effect of different strategies to
+simultaneously learn one model from multiple
+TrD's?}\label{rq2-what-is-the-effect-of-different-strategies-to-simultaneously-learn-one-model-from-multiple-trds}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#RQ2:}
+\CommentTok{#Boxplot mean distribution - wrt Test Data}
+\KeywordTok{ggboxplot}\NormalTok{(transferLearners,}\DataTypeTok{x =} \StringTok{"TeD"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"score"}\NormalTok{, }\DataTypeTok{color =} \StringTok{"TeD"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Coursework_B_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{transferLearners_Bad_TeD  =}\StringTok{ }\NormalTok{transferLearners[transferLearners}\OperatorTok{$}\NormalTok{TeD }\OperatorTok{==}\StringTok{ 'TeD5'} \OperatorTok{|}\StringTok{ }\NormalTok{transferLearners}\OperatorTok{$}\NormalTok{TeD }\OperatorTok{==}\StringTok{ 'TeD7'}\NormalTok{,]}
+\NormalTok{transferLearners_Good_TeD =}\StringTok{ }\NormalTok{transferLearners[transferLearners}\OperatorTok{$}\NormalTok{TeD }\OperatorTok{!=}\StringTok{ 'TeD5'} \OperatorTok{|}\StringTok{ }\NormalTok{transferLearners}\OperatorTok{$}\NormalTok{TeD }\OperatorTok{!=}\StringTok{ 'TeD7'}\NormalTok{,]}
+
+\KeywordTok{ggboxplot}\NormalTok{(transferLearners_Bad_TeD,}\DataTypeTok{x =} \StringTok{"model"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"score"}\NormalTok{, }\DataTypeTok{color =} \StringTok{"model"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Coursework_B_files/figure-latex/unnamed-chunk-4-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggboxplot}\NormalTok{(transferLearners_Good_TeD,}\DataTypeTok{x =} \StringTok{"model"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"score"}\NormalTok{, }\DataTypeTok{color =} \StringTok{"model"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Coursework_B_files/figure-latex/unnamed-chunk-4-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#leveneTest(score ~ model, data = transferLearners)}
+
+\CommentTok{# Compute the analysis of variance}
+\NormalTok{res_aov <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(score }\OperatorTok{~}\StringTok{ }\NormalTok{model }\OperatorTok{+}\StringTok{ }\NormalTok{TeD, }\DataTypeTok{data =}\NormalTok{ transferLearners)}
+\CommentTok{# Summary of the analysis}
+\KeywordTok{summary}\NormalTok{(res_aov)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = score ~ model + TeD, data = transferLearners)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.253125 -0.022571  0.000525  0.037843  0.204602 
+## 
+## Coefficients:
+##              Estimate Std. Error  t value Pr(>|t|)    
+## (Intercept)  0.809621   0.003672  220.505  < 2e-16 ***
+## modelM2      0.005737   0.003480    1.649  0.09933 .  
+## modelM3      0.011600   0.003540    3.277  0.00106 ** 
+## modelMF     -0.054194   0.003447  -15.724  < 2e-16 ***
+## modelMN      0.022119   0.003566    6.203 6.43e-10 ***
+## TeDTeD2     -0.224968   0.004174  -53.898  < 2e-16 ***
+## TeDTeD3     -0.097859   0.004174  -23.445  < 2e-16 ***
+## TeDTeD4     -0.315307   0.004174  -75.542  < 2e-16 ***
+## TeDTeD5     -0.754505   0.004174 -180.766  < 2e-16 ***
+## TeDTeD6     -0.186175   0.004174  -44.604  < 2e-16 ***
+## TeDTeD7     -0.526284   0.004174 -126.088  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.05731 on 2628 degrees of freedom
+## Multiple R-squared:  0.9474, Adjusted R-squared:  0.9472 
+## F-statistic:  4736 on 10 and 2628 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Pairwise t-tests for - Effect of different Strategies}
+\KeywordTok{pairwise.t.test}\NormalTok{( transferLearners}\OperatorTok{$}\NormalTok{score , transferLearners}\OperatorTok{$}\NormalTok{model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  transferLearners$score and transferLearners$model 
+## 
+##    M1      M2      M3      MF     
+## M2 1.00000 -       -       -      
+## M3 1.00000 1.00000 -       -      
+## MF 0.00202 0.00052 0.00015 -      
+## MN 0.91323 1.00000 1.00000 7.1e-06
+## 
+## P value adjustment method: holm
+\end{verbatim}
+
+Conclusion:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  By plotting boxplot, we see that there is no apparent difference
+  between the model's accuracy.
+\item
+  From the output of the Levene's Test results above, we can see that
+  the p-value is greater than the significance level of 0.05. This means
+  that there is evidence to suggest that the variance across groups is
+  statistically significantly different. Therefore, we can assume the
+  homogeneity of variances in the different treatment groups. So, we can
+  use the ANOVA test. 3.In one-way ANOVA test, a significant p-value
+  indicates that some of the group means are different, but we don't
+  know which pairs of groups are different. It's possible to perform
+  multiple pairwise-comparison, to determine if the mean difference
+  between specific pairs of group are statistically significant.
+\item
+  From the results of the Pairwise and the Tuckey test, we can see that
+  there no difference between the models. That is, given the data and
+  eveidences of performance, we can say that there is no effect of the
+  model strategies on the performance.
+\item
+  But, at the same time the model startegy MF is different from the
+  other models, hence the strategy MF has an effect on the performance.
+  But, from the boxplot, we can see that the mean distribution of MF
+  model accuracies is less, hence we can stringly recommend against
+  using strategy MF.
+\end{enumerate}
+
+\section{3. RQ3: What is the effect of the TrD's on the final model
+performance?}\label{rq3-what-is-the-effect-of-the-trds-on-the-final-model-performance}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#RQ3:}
+
+\CommentTok{#Boxplot mean distribution}
+\KeywordTok{ggboxplot}\NormalTok{(singleDataTransferLearner,}\DataTypeTok{x =} \StringTok{"TeD"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"score"}\NormalTok{, }\DataTypeTok{color =} \StringTok{"TeD"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Coursework_B_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Compute the analysis of variance}
+\NormalTok{res_aov <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(score }\OperatorTok{~}\StringTok{ }\NormalTok{TeD, }\DataTypeTok{data =}\NormalTok{ singleDataTransferLearner)}
+
+\CommentTok{# Summary of the analysis}
+\KeywordTok{summary}\NormalTok{(res_aov)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = score ~ TeD, data = singleDataTransferLearner)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.41416 -0.03311  0.00204  0.03605  0.24426 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  0.66248    0.01157  57.265  < 2e-16 ***
+## TeDTeD2     -0.11135    0.01636  -6.806 4.77e-11 ***
+## TeDTeD3     -0.02571    0.01636  -1.572    0.117    
+## TeDTeD4     -0.25073    0.01636 -15.325  < 2e-16 ***
+## TeDTeD5     -0.61959    0.01636 -37.871  < 2e-16 ***
+## TeDTeD6     -0.14965    0.01636  -9.147  < 2e-16 ***
+## TeDTeD7     -0.47941    0.01636 -29.303  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.08015 on 329 degrees of freedom
+## Multiple R-squared:  0.8821, Adjusted R-squared:   0.88 
+## F-statistic: 410.3 on 6 and 329 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pairwise.t.test}\NormalTok{(singleDataTransferLearner}\OperatorTok{$}\NormalTok{score , singleDataTransferLearner}\OperatorTok{$}\NormalTok{train)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  singleDataTransferLearner$score and singleDataTransferLearner$train 
+## 
+##      TrD1 TrD2 TrD3 TrD4 TrD5 TrD6 TrD7
+## TrD2 1.00 -    -    -    -    -    -   
+## TrD3 1.00 1.00 -    -    -    -    -   
+## TrD4 1.00 1.00 1.00 -    -    -    -   
+## TrD5 0.23 1.00 1.00 1.00 -    -    -   
+## TrD6 1.00 1.00 1.00 1.00 1.00 -    -   
+## TrD7 0.57 1.00 1.00 1.00 1.00 1.00 -   
+## TrD8 0.24 1.00 1.00 1.00 1.00 1.00 1.00
+## 
+## P value adjustment method: holm
+\end{verbatim}
+
+Conclusion: The same analysis strategy of the RQ2 was used here, but
+before applying the annova model, the data was flattened to make data of
+format, TrainData and equivalent scores. The post flattened dataset,
+consisted of scores and its quivalent training data label. As a single
+model can use multiply training data, copies of scores with respective
+to all the training data used were generated. For Example, if Model M3
+used TrD1 and TrD2 to give accuracy 0.5, the flattened data will consist
+of two rows with (TrD1, 0.5) and (TrD2, 0.5) as row values.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  From boxplot we can notice an apparent difference in mean
+  distribution.
+\item
+  This visuzlisation is backed up by the use of paired t-test. The
+  t-test reveals that there no difference in the distribution between
+  each of the groups. That means that the Training datasets have no
+  effect on the performance of the final model.
+\item
+  One draw back of the system is that, the effect of combinations of
+  TrDs cannot be explaine by the statistical analysis
+\end{enumerate}
+
+
+\end{document}
