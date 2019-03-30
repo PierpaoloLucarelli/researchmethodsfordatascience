@@ -1,6 +1,5 @@
 function [data, U_] = nystrom(dataset, l)
     S = dataset(:, 1:l);
-    
     means = zeros(size(S, 2), 1);
     for i=1:size(S, 2)
         means(i) = mean(S(:,i));
