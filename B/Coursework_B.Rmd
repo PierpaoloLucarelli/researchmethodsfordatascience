@@ -74,7 +74,7 @@ conclusion - The t-test returns a p-value of 1 which means that we do need to re
 #Boxplot mean distribution - wrt Test Data
 ggboxplot(transferLearners,x = "TeD", y = "score", color = "TeD")
 transferLearners_Bad_TeD  = transferLearners[transferLearners$TeD == 'TeD5' | transferLearners$TeD == 'TeD7',]
-transferLearners_Good_TeD = transferLearners[transferLearners$TeD != 'TeD5' | transferLearners$TeD != 'TeD7',]
+transferLearners_Good_TeD = transferLearners[transferLearners$TeD != 'TeD5' & transferLearners$TeD != 'TeD7',]
 
 ggboxplot(transferLearners_Bad_TeD,x = "model", y = "score", color = "model")
 ggboxplot(transferLearners_Good_TeD,x = "model", y = "score", color = "model")
@@ -87,8 +87,8 @@ res_aov <- lm(score ~ TeD, data = transferLearners)
 summary(res_aov)
 
 # Pairwise t-tests for - Effect of different Strategies
-pairwise.t.test( transferLearners_Bad_TeD$score , transferLearners_Bad_TeD$model,p.adjust.method = "none", pool.sd = FALSE)
-pairwise.t.test( transferLearners_Good_TeD$score , transferLearners_Good_TeD$model, p.adjust.method = "none", pool.sd = FALSE)
+pairwise.t.test( transferLearners_Bad_TeD$score , transferLearners_Bad_TeD$model)
+pairwise.t.test( transferLearners_Good_TeD$score , transferLearners_Good_TeD$model)
 
 ```
 Conclusion:
@@ -103,8 +103,10 @@ Conclusion:
 #3. RQ3: What is the effect of the TrD's on the final model performance?
 ```{r}
 #RQ3:
-singleLearners_Bad_TeD  = singleDataTransferLearner[singleDataTransferLearner$TeD == 'TeD5' | singleDataTransferLearner$TeD == 'TeD7',]
-singleLearners_Good_TeD = singleDataTransferLearner[singleDataTransferLearner$TeD != 'TeD5' | singleDataTransferLearner$TeD != 'TeD7',]
+singleLearners_Bad_TeD  = singleDataTransferLearner[singleDataTransferLearner$TeD == 'TeD5' | 
+                                                      singleDataTransferLearner$TeD == 'TeD7',]
+singleLearners_Good_TeD = singleDataTransferLearner[singleDataTransferLearner$TeD != 'TeD5' & 
+                                                      singleDataTransferLearner$TeD != 'TeD7',]
 
 #Boxplot mean distribution
 ggboxplot(singleLearners_Bad_TeD,x = "train", y = "score", color = "train")
@@ -115,8 +117,8 @@ res_aov <- lm(score ~ train + TeD, data = singleDataTransferLearner)
 # Summary of the analysis
 summary(res_aov)
 
-pairwise.t.test(singleLearners_Bad_TeD$score , singleLearners_Bad_TeD$train, p.adjust.method = "none", pool.sd = FALSE)
-pairwise.t.test(singleLearners_Good_TeD$score , singleLearners_Good_TeD$train, p.adjust.method = "none", pool.sd = FALSE)
+pairwise.t.test(singleLearners_Bad_TeD$score , singleLearners_Bad_TeD$train)
+pairwise.t.test(singleLearners_Good_TeD$score , singleLearners_Good_TeD$train)
 
 ```
 Conclusion:

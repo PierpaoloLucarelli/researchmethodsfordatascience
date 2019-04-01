@@ -23,5 +23,8 @@ function [data, eigenV] = mypca(dataset, n)
         data = evecs' * dataset';
         data = data';
         eigenV = evecs;
+        
+        % add mean back to view vec image
+        eigenV = eigenV + means;
     end
 end

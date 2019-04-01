@@ -23,4 +23,7 @@ function [data, U_] = nystrom(dataset, l)
    U_ = [ Ua ; B*Ua*inv(Va)];
    data = U_' * dataset';
    data = data';
+   
+   % add mean back to view vec image
+   U_ = U_ + means;
 end
