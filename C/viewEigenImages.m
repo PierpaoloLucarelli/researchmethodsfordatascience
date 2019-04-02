@@ -5,10 +5,7 @@ function [showArray] = viewEigenImages(data, em1)
         x = data(i,:)';
         imgData = rescale(x .* em1);
         eigVec=[eigVec imgData];
-    end
-    
-
-    
+    end    
     imageArray=[];
     rowcount=10;
     colcount=10;

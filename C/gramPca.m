@@ -26,8 +26,6 @@ function [data, eigenV] = gramPca(dataset, n)
         end
         data = eigenV' * dataset';
         data = data';
-        
-        % add mean back to view vec image
-        eigenV = eigenV + means;
+       
     end
 end
