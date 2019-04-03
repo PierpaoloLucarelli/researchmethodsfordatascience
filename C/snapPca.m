@@ -5,7 +5,8 @@ function [data, eigenV] = snapPca(dataset, n, fraction)
         data = 0;
     else
        num_to_fetch = floor(size(dataset, 1) * fraction);
-       dataset = dataset(randperm(size(dataset, 1), num_to_fetch), :);
+%        dataset = dataset(randperm(size(dataset, 1), num_to_fetch), :);
+       dataset = dataset(1:num_to_fetch, :);
        [data, eigenV] = gramPca(dataset, n);
     end
 end

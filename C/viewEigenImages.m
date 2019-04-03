@@ -1,14 +1,11 @@
 function [showArray] = viewEigenImages(data, em1)
-    
-%     eigVec=[];
-%     for i=1:size(data,1)
-%         x = data(i,:)';
-%         imgData = rescale(x .* em1);
-%         eigVec=[eigVec imgData];
-%     end
-    
-
-    eigVec = data;
+s
+    eigVec=[];
+    for i=1:size(data,1)
+        x = data(i,:)';
+        imgData = rescale(x .* em1);
+        eigVec=[eigVec imgData];
+    end
     
     imageArray=[];
     rowcount=10;
